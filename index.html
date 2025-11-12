@@ -1,160 +1,133 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jogo da velha</title>
-    <style>
-        body {
-          margin: 0;
-          min-height: 100vh;
-          /* Fundo com imagem + overlay para contraste */
-          background-image:
-            linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
-            url('ChatGPT Image 12 de nov. de 2025, 01_07_19.png');
-          background-size: cover;
-          background-position: center;
-          background-attachment: fixed;
-        }
-        .game {display: flex; 
-        flex-direction: column; 
-        align-items: center;
-        gap: 12px;
-        padding: 24px;
-        font-family: system-ui, Arial, sans-serif;
-        }
-        .title {
-          font-size: 40px;
-          font-weight: 800;
-          color: #ffffff;
-          letter-spacing: 1px;
-          text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-          margin: 8px 0 4px 0;
-        }
-        .status { font-weight: 600;
-        }
-        .board {
-            display: inline-block;
-            padding: 10px;
-            background: #f7f7f8;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08);
-        }
-        .board-row{
-             display: flex;
-        }
-        .square {width: 72px; height: 72px; font-size: 28px;
-        font-weight: 700; cursor: pointer;
-        border: 2px solid #333;
-        background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
-        border-radius: 6px;
-        box-shadow: 0 2px 0 rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.12);
-        border-radius: 10px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08);
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogo da Velha (JSX)</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+        url('ChatGPT Image 12 de nov. de 2025, 01_07_19.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: system-ui, Arial, sans-serif;
     }
-    .board-row{
-         display: flex;
-    }
-    .square {width: 72px; height: 72px; font-size: 28px;
-    font-weight: 700; cursor: pointer;
-    border: 2px solid #333;
-    background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
-    border-radius: 6px;
-    box-shadow: 0 2px 0 rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.12);
-    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
-    }
-    .square:not(:last-child){ border-right: none;
-    }
-    .board-row:not(:last-child){ border-bottom: none;
-    }
-    .reset-btn{
-        padding: 8px 12px;
-        font-weight: 600;
-        cursor: pointer;
-        background: #ffffff;
-        border: 1px solid #d0d0d0;
-        border-radius: 8px;
-        box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.12);
-        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
-    }
+    .game { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px; }
+    .title { font-size: 40px; font-weight: 800; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 8px 0 4px; }
+    .status { font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
 
+    .board { display: inline-block; padding: 10px; background: #f7f7f8; border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08); }
+    .board-row { display: flex; }
+
+    .square { width: 72px; height: 72px; font-size: 28px; font-weight: 700; cursor: pointer;
+      border: 2px solid #333; background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
+      border-radius: 6px; box-shadow: 0 2px 0 rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.12);
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease; }
+    .square:not(:last-child) { border-right: none; }
+    .board-row:not(:last-child) .square { border-bottom: none; }
     .square:hover { box-shadow: 0 4px 0 rgba(0,0,0,0.22), 0 10px 18px rgba(0,0,0,0.14); }
     .square:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.12); }
 
+    .reset-btn { padding: 8px 12px; font-weight: 600; cursor: pointer; background: #ffffff; border: 1px solid #d0d0d0;
+      border-radius: 8px; box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.12);
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease; }
     .reset-btn:hover { box-shadow: 0 2px 0 rgba(0,0,0,0.22), 0 8px 16px rgba(0,0,0,0.14); }
     .reset-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.12); }
-    </style>
+  </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <div id="root"></div>
 
-    <script>
-        const { useState } = React;
+  <!-- React e ReactDOM (UMD) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <!-- Babel Standalone para transpilar JSX no navegador (apenas para estudo/demonstração) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-        function Square(props){
-            return React.createElement("button", { className: "square", onClick: props.onClick}, props.value);
-        }
+  <!-- App com JSX -->
+  <script type="text/babel">
+    const { useState } = React;
 
-        function Board(props) {
-            const rows = [];
-            for (let r = 0; r < 3; r++) {
-                const cols = [];
-                for (let c = 0; c < 3; c++) {
-                    const idx = r * 3 + c;
-                    cols.push(React.createElement (Square, { key: idx, value: props.squares[idx], onClick: () => props.onSquareClick(idx),
-                        
-                    }))
-                }
-                rows.push( React.createElement("div", { className: "board-row", key: r }, ...cols));
+    function Square({ value, onClick }) {
+      return (
+        <button className="square" onClick={onClick}>
+          {value}
+        </button>
+      );
+    }
 
-            }
-            return React.createElement("div", { className: "board"}, ...rows);
+    function Board({ squares, onSquareClick }) {
+      return (
+        <div className="board">
+          {[0,1,2].map(r => (
+            <div key={r} className="board-row">
+              {[0,1,2].map(c => {
+                const idx = r * 3 + c;
+                return (
+                  <Square key={idx} value={squares[idx]} onClick={() => onSquareClick(idx)} />
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      );
+    }
 
-        }
+    function calculateWinner(s) {
+      const lines = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6],
+      ];
+      for (const [a,b,c] of lines) {
+        if (s[a] && s[a] === s[b] && s[a] === s[c]) return s[a];
+      }
+      return null;
+    }
 
-        function calculateWinner (s) {
-            const lines = [ [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6],];
-            for (const [a,b,c] of lines) {
-                if (s[a] && s[a] == s[b] && s[a] == s[c]) return s[a];
-            }
-            return null;
-        }
-        function Game() {
-            const [squares, setSquares] = useState(Array(9).fill(null));
-            const [xIsNext, setXIsNext] = useState(true);
-            const winner = calculateWinner(squares);
-            const isDraw = !winner && squares.every(Boolean);
-        
-        function handleSquareClick(i) {
-            if (winner || squares[i] ) return;
-            const next = squares.slice();
-            next[i] = xIsNext ? "X" : "O";
-            setSquares(next);
-            setXIsNext(!xIsNext);
-        }
+    function Game() {
+      const [squares, setSquares] = useState(Array(9).fill(null));
+      const [xIsNext, setXIsNext] = useState(true);
 
-        function handleReset() {
-            setSquares(Array(9).fill(null));
-            setXIsNext(true);
-        }
+      const winner = calculateWinner(squares);
+      const isDraw = !winner && squares.every(Boolean);
 
-        const statusText = winner ? "vencedor: " + winner : isDraw ? "Empate" : "jogador: " + (xIsNext ? "X" : "O");
+      function handleSquareClick(i) {
+        if (winner || squares[i]) return;
+        const next = squares.slice();
+        next[i] = xIsNext ? 'X' : 'O';
+        setSquares(next);
+        setXIsNext(!xIsNext);
+      }
 
-        return React.createElement(
-        "div",
-        { className: "game" },
-        React.createElement("h1", { className: "title" }, "Jogo da Velha"),
-        React.createElement("div", { className: "status" }, statusText),
-        React.createElement(Board, { squares, onSquareClick: handleSquareClick }),
-        React.createElement("button", { className: "reset-btn", onClick: handleReset }, "Reiniciar")
-        );
-        // FECHA a função Game aqui:
-        }
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(React.createElement(Game, null));
-</script>
-    
+      function handleReset() {
+        setSquares(Array(9).fill(null));
+        setXIsNext(true);
+      }
+
+      const statusText = winner
+        ? `vencedor: ${winner}`
+        : isDraw
+        ? 'Empate'
+        : `jogador: ${xIsNext ? 'X' : 'O'}`;
+
+      return (
+        <div className="game">
+          <h1 className="title">Jogo da Velha</h1>
+          <div className="status">{statusText}</div>
+          <Board squares={squares} onSquareClick={handleSquareClick} />
+          <button className="reset-btn" onClick={handleReset}>Reiniciar</button>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<Game />);
+  </script>
 </body>
 </html>
